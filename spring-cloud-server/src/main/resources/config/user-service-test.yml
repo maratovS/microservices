@@ -1,0 +1,9 @@
+server:
+  port: 8084
+
+test: default
+my:
+  property:
+    test: user-service
+
+description: "hi i am user-service-test"

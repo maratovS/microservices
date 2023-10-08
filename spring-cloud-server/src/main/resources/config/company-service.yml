@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+test: default
+my:
+  property:
+    test: company-service
+
+description: "hi i am company-service"

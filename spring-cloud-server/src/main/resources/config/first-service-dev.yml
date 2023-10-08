@@ -1,0 +1,8 @@
+spring:
+  active:
+    profiles: dev
+
+my:
+  property:
+    test: Hello dev!!
+    
