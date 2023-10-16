@@ -1,0 +1,5 @@
+# Project exclude paths
+/company-service/target/
+/spring-cloud-server/target/
+/user-service/target/
+/.idea
