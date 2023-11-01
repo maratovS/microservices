@@ -1,3 +1,14 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5433/microservices?currentSchema=company-schema'
+    username: user
+    password: password
+
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/migration.sql
+
 server:
   port: 8081
 

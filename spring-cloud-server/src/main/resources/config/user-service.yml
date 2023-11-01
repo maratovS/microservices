@@ -1,8 +1,13 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://host.docker.internal:5433/microservices?currentSchema=user-schema'
+    url: 'jdbc:postgresql://localhost:5433/microservices?currentSchema=user-schema'
     username: user
     password: password
+
+
+  liquibase:
+    enabled: false
+    change-log: classpath:db/migration.sql
 
 server:
   port: 8089

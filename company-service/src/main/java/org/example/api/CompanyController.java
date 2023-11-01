@@ -1,19 +1,30 @@
 package org.example.api;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.example.api.service.CompanyService;
+import org.example.db.dto.CompanyDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/ping")
+@RequestMapping("/api/company")
 public class CompanyController {
+    @Autowired
+    private CompanyService companyService;
 
-    @Value("${description}")
-    private String description;
+    @PostMapping("/create")
+    public Long createCompany(@RequestBody CompanyDto companyDto) {
+        return companyService.createCompany(companyDto);
+    }
 
-    @GetMapping
-    public String getTestProperty() {
-        return description;
+    @GetMapping("/exists-by-id/{companyId}")
+    Boolean existsById (@PathVariable Long companyId) {
+        return companyService.existsById(companyId);
+    }
+
+    @GetMapping("/get-all")
+    List<CompanyDto> getAllCompanies () {
+        return companyService.getAllCompanies();
     }
 }
