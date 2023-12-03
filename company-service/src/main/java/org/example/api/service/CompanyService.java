@@ -37,6 +37,13 @@ public class CompanyService {
     }
 
     @Transactional
+    public CompanyDto getById(Long id) {
+        return mapper.map(repo.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Компания с id: " + id + " - не существует"))
+                , CompanyDto.class);
+    }
+
+    @Transactional
     public List<CompanyDto> getAllCompanies() {
         return repo.findAll().stream().map(company -> mapper.map(company, CompanyDto.class)).toList();
     }

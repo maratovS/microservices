@@ -23,6 +23,11 @@ public class CompanyController {
         return companyService.existsById(companyId);
     }
 
+    @GetMapping("/get-by-id/{companyId}")
+    CompanyDto getById (@PathVariable Long companyId) {
+        return companyService.getById(companyId);
+    }
+
     @GetMapping("/get-all")
     List<CompanyDto> getAllCompanies () {
         return companyService.getAllCompanies();
