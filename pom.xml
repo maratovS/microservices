@@ -19,6 +19,7 @@
         <module>spring-cloud-server</module>
         <module>user-service</module>
         <module>company-service</module>
+        <module>discovery-server</module>
     </modules>
 
     <properties>

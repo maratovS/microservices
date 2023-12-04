@@ -22,12 +22,12 @@ public class CompanyService {
 
     @Transactional
     public Long createCompany(CompanyDto companyDto) {
-        Boolean exist = client.existsById(companyDto.getUserId());
-        if(!exist) {
-            repo.save(mapper.map(companyDto, Company.class));
-            throw new EntityNotFoundException("Компания создана. Директор с id = %s не существует".formatted(companyDto.getUserId()));
+        if (companyDto.getUserId() != null) {
+            Boolean exist = client.existsById(companyDto.getUserId());
+            if (!exist) {
+                throw new EntityNotFoundException("Компания создана. Директор с id = %s не существует".formatted(companyDto.getUserId()));
+            }
         }
-
         return repo.save(mapper.map(companyDto, Company.class)).getId();
     }
 

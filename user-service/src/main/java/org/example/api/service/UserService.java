@@ -25,11 +25,14 @@ public class UserService {
 
     @Transactional
     public Long createUser(UserDto userDto) {
-        boolean exist = userServiceFeignClients.existsById(userDto.getCompanyId());
-        if(!exist) {
-            throw new EntityNotFoundException("Компания с id = %s не существует".formatted(userDto.getCompanyId()));
+        if (userDto.getCompanyId() != null) {
+            boolean exist = userServiceFeignClients.existsById(userDto.getCompanyId());
+            if (!exist) {
+                throw new EntityNotFoundException("Компания с id = %s не существует".formatted(userDto.getCompanyId()));
+            }
         }
         User toSave = mapper.map(userDto, User.class);
+        System.out.println("User saved with name: " + toSave.getName());
         return repo.save(toSave).getId();
     }
 
