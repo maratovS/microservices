@@ -20,6 +20,7 @@
         <module>user-service</module>
         <module>company-service</module>
         <module>discovery-server</module>
+        <module>api-gateway-server</module>
     </modules>
 
     <properties>

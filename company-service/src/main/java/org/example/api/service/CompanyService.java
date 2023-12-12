@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +46,10 @@ public class CompanyService {
 
     @Transactional
     public List<CompanyDto> getAllCompanies() {
-        return repo.findAll().stream().map(company -> mapper.map(company, CompanyDto.class)).toList();
+        List<Company> rows = repo.findAll();
+        if (rows == null){
+            rows = new ArrayList<>();
+        }
+        return rows.stream().map(company -> mapper.map(company, CompanyDto.class)).toList();
     }
 }
