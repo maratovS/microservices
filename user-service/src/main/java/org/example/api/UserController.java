@@ -2,7 +2,9 @@ package org.example.api;
 
 import org.example.api.service.UserService;
 import org.example.db.dto.UserDto;
+import org.example.db.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +17,8 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/create")
-    public Long createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok().body(userService.createUser(userDto));
     }
 
     @GetMapping("/exists-by-id/{id}")

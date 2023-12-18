@@ -3,6 +3,7 @@ package org.example.api;
 import org.example.api.service.CompanyService;
 import org.example.db.dto.CompanyDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class CompanyController {
     private CompanyService companyService;
 
     @PostMapping("/create")
-    public Long createCompany(@RequestBody CompanyDto companyDto) {
-        return companyService.createCompany(companyDto);
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto) {
+        return ResponseEntity.ok().body(companyService.createCompany(companyDto));
     }
 
     @GetMapping("/exists-by-id/{companyId}")
@@ -31,5 +32,10 @@ public class CompanyController {
     @GetMapping("/get-all")
     List<CompanyDto> getAllCompanies () {
         return companyService.getAllCompanies();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteCompany(@PathVariable Long id) {
+        return companyService.deleteCompany(id);
     }
 }

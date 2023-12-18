@@ -3,6 +3,16 @@ spring:
     url: 'jdbc:postgresql://localhost:5433/microservices?currentSchema=company-schema'
     username: user
     password: password
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: company-service-group
+      topic:
+        company-deleted-user: company-deleted-user-topic
+    producer:
+      group-id: company-service-group
+      topic:
+        company-deleted: company-deleted-topic
 
 
   liquibase:

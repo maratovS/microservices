@@ -16,5 +16,5 @@ public class Company {
     private String ogrn;
     private String description;
     private Long userId;
-
+    private boolean deleted = Boolean.FALSE;
 }

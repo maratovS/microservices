@@ -7,6 +7,9 @@ import org.example.db.model.User;
 import org.example.db.repo.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,8 +26,14 @@ public class UserService {
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Value("${spring.kafka.producer.topic.company-deleted-user}")
+    private String companyDeletedUserTopic;
+
     @Transactional
-    public Long createUser(UserDto userDto) {
+    public UserDto createUser(UserDto userDto) {
         if (userDto.getCompanyId() != null) {
             boolean exist = userServiceFeignClients.existsById(userDto.getCompanyId());
             if (!exist) {
@@ -33,10 +42,9 @@ public class UserService {
         }
         User toSave = mapper.map(userDto, User.class);
         System.out.println("User saved with name: " + toSave.getName());
-        return repo.save(toSave).getId();
+        return mapper.map(repo.save(toSave), UserDto.class);
     }
 
-    @Transactional
     public Boolean existsById(Long id) {
         User User = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь с id: " + id + " - не существует"));
@@ -47,7 +55,6 @@ public class UserService {
         return true;
     }
 
-    @Transactional
     public List<UserDto> getAllUsers() {
         List<User> Users = repo.findAll();
         List<UserDto> userDtos = new ArrayList<>();
@@ -93,5 +100,16 @@ public class UserService {
         }
         repo.save(mapper.map(userDto, org.example.db.model.User.class));
         return "updated";
+    }
+
+    @KafkaListener(topics = "${spring.kafka.consumer.topic.company-deleted}", groupId = "${spring.kafka.consumer.group-id}")
+    public void handleCompanyDeleted(String companyId) {
+        Long id = Long.parseLong(companyId);
+        List<User> users = repo.findAllByCompanyId(id);
+        users.forEach(user -> {
+            user.setCompanyId(null);
+            repo.save(user);
+        });
+        kafkaTemplate.send(companyDeletedUserTopic, id.toString());
     }
 }

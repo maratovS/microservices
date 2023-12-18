@@ -20,5 +20,5 @@ public class User {
     @JsonIgnore
     private String password;
     private boolean enabled;
-    private Long CompanyId;
+    private Long companyId;
 }

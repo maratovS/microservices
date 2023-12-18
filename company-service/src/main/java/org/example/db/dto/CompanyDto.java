@@ -11,4 +11,5 @@ public class CompanyDto {
     private String ogrn;
     private String description;
     private Long userId;
+    private boolean deleted;
 }
